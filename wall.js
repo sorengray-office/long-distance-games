@@ -47,7 +47,28 @@ function cancelUpload() {
   pendingImage = null;
 }
 
-function savePolaroid() {
+function compressImage(dataUrl, maxWidth, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width;
+      let h = img.height;
+      if (w > maxWidth) {
+        h = (maxWidth / w) * h;
+        w = maxWidth;
+      }
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  });
+}
+
+async function savePolaroid() {
   const caption = document.getElementById('captionInput').value.trim();
   
   if (!caption) {
@@ -63,11 +84,18 @@ function savePolaroid() {
   // Get existing polaroids
   const polaroids = JSON.parse(localStorage.getItem('ge_polaroids') || '[]');
   
+  // Compress image before saving to conserve localStorage space
+  const compressedImage = await compressImage(pendingImage, 800, 0.7);
+  
+  // Get current player
+  const player = localStorage.getItem('ge_player') || '?';
+  
   // Add new polaroid
   const newPolaroid = {
     id: Date.now(),
-    image: pendingImage,
+    image: compressedImage,
     caption: caption,
+    uploadedBy: player,
     date: new Date().toISOString(),
     rotation: (Math.random() - 0.5) * 10 // Random rotation between -5 and 5 degrees
   };
@@ -106,13 +134,18 @@ function loadPolaroids() {
   // Shuffle polaroids for varied display
   const shuffled = [...polaroids].sort(() => Math.random() - 0.5);
   
-  wall.innerHTML = shuffled.map(p => `
+  wall.innerHTML = shuffled.map(p => {
+    const date = new Date(p.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const by = p.uploadedBy === 'E' ? 'Ethan' : p.uploadedBy === 'G' ? 'Garrick' : '';
+    return `
     <div class="polaroid-item" style="transform: rotate(${p.rotation}deg);" onclick="openLightbox(${p.id})">
       <button class="delete-btn" onclick="event.stopPropagation(); deletePolaroid(${p.id})" title="Delete">×</button>
       <img src="${p.image}" alt="${p.caption}">
       <div class="polaroid-caption">${p.caption}</div>
+      <div class="polaroid-meta">${date}${by ? ' · ' + by : ''}</div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function deletePolaroid(id) {
