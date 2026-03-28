@@ -134,11 +134,11 @@
       color: var(--cream);
     }
 
-    .player-btn.garik {
+    .player-btn.garrick {
       border-color: var(--rust);
     }
 
-    .player-btn.garik:hover {
+    .player-btn.garrick:hover {
       background: var(--rust);
       color: var(--cream);
     }
@@ -217,7 +217,7 @@
           <button class="player-btn ethan" onclick="selectPlayer('E')">
             E
           </button>
-          <button class="player-btn garik" onclick="selectPlayer('G')">
+          <button class="player-btn garrick" onclick="selectPlayer('G')">
             G
           </button>
         </div>
@@ -234,15 +234,18 @@
       const playerSelection = document.getElementById('playerSelection');
       const form = document.getElementById('authForm');
       
-      // Simple hash check (passphrase is "garik")
-      if (input === 'garik') {
-        // Correct passphrase
+      // Accept "garrick" (logs in as G) or "ethan" (logs in as E)
+      if (input === 'garrick' || input === 'ethan') {
+        // Correct passphrase — auto-select player based on name
         errorMessage.classList.remove('visible');
-        form.style.display = 'none';
-        playerSelection.classList.add('visible');
-        
-        // Store passphrase validation
         localStorage.setItem('ge_passphrase_valid', 'true');
+        
+        const player = (input === 'ethan') ? 'E' : 'G';
+        localStorage.setItem('ge_player', player);
+        localStorage.setItem('ge_authenticated', 'true');
+        
+        // Navigate to hub
+        window.location.href = 'hub.html';
       } else {
         // Incorrect passphrase
         errorMessage.classList.add('visible');

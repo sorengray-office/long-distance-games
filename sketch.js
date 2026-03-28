@@ -26,7 +26,7 @@ const WORD_BANK = [
   "arcade game", "skateboard", "roller skates", "balloon", "kite", "fireworks",
   "treasure chest", "pirate ship", "robot", "alien", "ghost", "wizard",
   
-  // Garik's Interests (easter eggs)
+  // garrick's Interests (easter eggs)
   "trail running shoes", "thrift store find", "vintage camera", "field journal",
   "fossilized bone", "specimen jar", "hiking trail", "observation notes",
   
