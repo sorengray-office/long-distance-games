@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Question Deck – G & E</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .questions-page {
+      padding: var(--spacing-lg);
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--cream);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .page-subtitle {
+      font-family: var(--font-handwritten);
+      font-size: 1.3rem;
+      color: var(--amber);
+    }
+
+    .level-selector {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      margin-bottom: var(--spacing-xl);
+      flex-wrap: wrap;
+    }
+
+    .level-btn {
+      padding: var(--spacing-md) var(--spacing-lg);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: 3px solid;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      background: var(--cream);
+      color: var(--espresso);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .level-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+    }
+
+    .level-btn.level-1 {
+      border-color: var(--amber);
+    }
+
+    .level-btn.level-1::before {
+      background: var(--amber);
+    }
+
+    .level-btn.level-2 {
+      border-color: var(--forest);
+    }
+
+    .level-btn.level-2::before {
+      background: var(--forest);
+    }
+
+    .level-btn.level-3 {
+      border-color: var(--rust);
+    }
+
+    .level-btn.level-3::before {
+      background: var(--rust);
+    }
+
+    .level-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .level-btn.active {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .level-btn.active.level-1 {
+      background: var(--amber);
+    }
+
+    .level-btn.active.level-2 {
+      background: var(--forest);
+      color: var(--cream);
+    }
+
+    .level-btn.active.level-3 {
+      background: var(--rust);
+      color: var(--cream);
+    }
+
+    .card-container {
+      perspective: 1000px;
+      margin-bottom: var(--spacing-xl);
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-card {
+      width: 100%;
+      max-width: 600px;
+      min-height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      cursor: pointer;
+    }
+
+    .question-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      min-height: 300px;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      padding: var(--spacing-xl);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-front {
+      background: var(--cream);
+      border: 4px solid var(--forest);
+      color: var(--espresso);
+    }
+
+    .card-front.level-1 { border-left: 8px solid var(--amber); }
+    .card-front.level-2 { border-left: 8px solid var(--forest); }
+    .card-front.level-3 { border-left: 8px solid var(--rust); }
+
+    .card-back {
+      background: var(--forest);
+      color: var(--cream);
+      transform: rotateY(180deg);
+      border: 4px solid var(--amber);
+    }
+
+    .card-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .question-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      line-height: 1.4;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .tap-hint {
+      font-family: var(--font-handwritten);
+      font-size: 1.1rem;
+      color: var(--amber);
+      margin-top: var(--spacing-md);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--spacing-lg);
+    }
+
+    .bookmark-btn {
+      background: transparent;
+      border: 2px solid var(--amber);
+      color: var(--amber);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+
+    .bookmark-btn:hover {
+      background: var(--amber);
+      color: var(--espresso);
+    }
+
+    .bookmark-btn.saved {
+      background: var(--amber);
+      color: var(--espresso);
+    }
+
+    .saved-questions {
+      margin-top: var(--spacing-xl);
+      padding: var(--spacing-lg);
+      background: rgba(245, 237, 224, 0.05);
+      border: 2px dashed var(--forest);
+      border-radius: 8px;
+    }
+
+    .saved-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--cream);
+      margin-bottom: var(--spacing-md);
+      text-align: center;
+    }
+
+    .saved-list {
+      list-style: none;
+    }
+
+    .saved-item {
+      background: var(--cream);
+      color: var(--espresso);
+      padding: var(--spacing-sm) var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
+      border-radius: 4px;
+      border-left: 4px solid var(--amber);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: var(--rust);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px;
+    }
+
+    .remove-btn:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <a href="hub.html" class="nav-back">← Back to Hub</a>
+
+  <div class="questions-page">
+    <div class="page-header">
+      <h1 class="page-title">🃏 The Question Deck</h1>
+      <p class="page-subtitle">Three levels of curiosity, infinite possibilities</p>
+    </div>
+
+    <div class="level-selector">
+      <button class="level-btn level-1 active" onclick="selectLevel(1)">
+        Surface<br><small>(Easy & Fun)</small>
+      </button>
+      <button class="level-btn level-2" onclick="selectLevel(2)">
+        Deeper<br><small>(Getting Real)</small>
+      </button>
+      <button class="level-btn level-3" onclick="selectLevel(3)">
+        Deep End<br><small>(Vulnerable)</small>
+      </button>
+    </div>
+
+    <div class="card-container">
+      <div class="question-card" id="questionCard" onclick="flipCard()">
+        <div class="card-face card-front level-1" id="cardFront">
+          <div class="card-label" id="cardLabel">Surface Level</div>
+          <div class="question-text" id="questionText">
+            Click "Draw Card" to start
+          </div>
+          <div class="tap-hint">Tap to see the back</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="handwritten" style="font-size: 1.5rem;">
+            Take turns answering,<br>
+            or answer together!
+          </div>
+          <div style="margin-top: var(--spacing-md); opacity: 0.8;">
+            Tap again to return
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn btn-primary" onclick="drawNewCard()">
+        Draw Card
+      </button>
+      <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">
+        <span id="bookmarkIcon">🔖</span>
+        <span id="bookmarkText">Save This One</span>
+      </button>
+      <button class="btn btn-ghost" onclick="shuffleDeck()">
+        🔄 Shuffle
+      </button>
+    </div>
+
+    <div class="saved-questions">
+      <h2 class="saved-title">Saved Questions</h2>
+      <ul class="saved-list" id="savedList">
+        <li style="text-align: center; color: var(--cream); opacity: 0.6;">
+          No saved questions yet
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+</body>
+</html>

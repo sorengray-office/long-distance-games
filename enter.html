@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter – G & E</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-lg);
+    }
+
+    .auth-container {
+      background: var(--cream);
+      color: var(--espresso);
+      border: 4px solid var(--forest);
+      border-radius: 8px;
+      padding: var(--spacing-xl);
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .auth-container::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px dashed rgba(45, 74, 46, 0.3);
+      pointer-events: none;
+    }
+
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--forest);
+      margin-bottom: var(--spacing-sm);
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      font-family: var(--font-handwritten);
+      font-size: 1.3rem;
+      color: var(--amber);
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .form-group label {
+      color: var(--espresso);
+      font-weight: 600;
+    }
+
+    .passphrase-input {
+      font-size: 1.2rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+    }
+
+    .player-selection {
+      display: none;
+      margin-top: var(--spacing-lg);
+    }
+
+    .player-selection.visible {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .player-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+
+    .player-btn {
+      padding: var(--spacing-lg);
+      font-size: 1.5rem;
+      font-family: var(--font-display);
+      font-weight: 900;
+      border: 3px solid var(--forest);
+      background: white;
+      color: var(--espresso);
+      cursor: pointer;
+      transition: var(--transition-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .player-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(196, 136, 58, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .player-btn:hover {
+      transform: scale(1.05);
+      border-color: var(--amber);
+      background: var(--amber);
+      color: var(--espresso);
+    }
+
+    .player-btn:hover::before {
+      left: 100%;
+    }
+
+    .player-btn.ethan {
+      border-color: var(--denim);
+    }
+
+    .player-btn.ethan:hover {
+      background: var(--denim);
+      color: var(--cream);
+    }
+
+    .player-btn.garik {
+      border-color: var(--rust);
+    }
+
+    .player-btn.garik:hover {
+      background: var(--rust);
+      color: var(--cream);
+    }
+
+    .error-message {
+      color: var(--popsicle-red);
+      text-align: center;
+      margin-top: var(--spacing-sm);
+      font-weight: 600;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: var(--forest);
+      opacity: 0.7;
+      text-align: center;
+      margin-top: var(--spacing-sm);
+      font-style: italic;
+    }
+
+    /* Easter egg: small cat paw prints */
+    .paw-print {
+      position: absolute;
+      font-size: 0.8rem;
+      opacity: 0.15;
+      user-select: none;
+    }
+
+    .paw-1 { top: 20px; right: 30px; transform: rotate(-20deg); }
+    .paw-2 { bottom: 30px; left: 25px; transform: rotate(40deg); }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-container">
+      <span class="paw-print paw-1">🐾</span>
+      <span class="paw-print paw-2">🐾</span>
+
+      <h1 class="auth-title">Welcome</h1>
+      <p class="auth-subtitle">A secret place for G & E</p>
+
+      <form id="authForm" onsubmit="checkPassphrase(event)">
+        <div class="form-group">
+          <label for="passphrase">Enter the magic word:</label>
+          <input 
+            type="password" 
+            id="passphrase" 
+            class="passphrase-input" 
+            placeholder="•••••"
+            autocomplete="off"
+            required
+          >
+          <p class="hint">Hint: A name you hold dear 🦖</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Enter
+        </button>
+
+        <div class="error-message" id="errorMessage">
+          Hmm, that's not quite right. Try again!
+        </div>
+      </form>
+
+      <div class="player-selection" id="playerSelection">
+        <p style="text-align: center; font-weight: 600; margin-bottom: var(--spacing-sm);">
+          Who are you today?
+        </p>
+        <div class="player-buttons">
+          <button class="player-btn ethan" onclick="selectPlayer('E')">
+            E
+          </button>
+          <button class="player-btn garik" onclick="selectPlayer('G')">
+            G
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function checkPassphrase(event) {
+      event.preventDefault();
+      
+      const input = document.getElementById('passphrase').value.toLowerCase().trim();
+      const errorMessage = document.getElementById('errorMessage');
+      const playerSelection = document.getElementById('playerSelection');
+      const form = document.getElementById('authForm');
+      
+      // Simple hash check (passphrase is "garik")
+      if (input === 'garik') {
+        // Correct passphrase
+        errorMessage.classList.remove('visible');
+        form.style.display = 'none';
+        playerSelection.classList.add('visible');
+        
+        // Store passphrase validation
+        localStorage.setItem('ge_passphrase_valid', 'true');
+      } else {
+        // Incorrect passphrase
+        errorMessage.classList.add('visible');
+        document.getElementById('passphrase').value = '';
+        document.getElementById('passphrase').focus();
+        
+        // Shake animation
+        document.querySelector('.auth-container').style.animation = 'shake 0.5s';
+        setTimeout(() => {
+          document.querySelector('.auth-container').style.animation = '';
+        }, 500);
+      }
+    }
+
+    function selectPlayer(player) {
+      // Store player selection
+      localStorage.setItem('ge_player', player);
+      localStorage.setItem('ge_authenticated', 'true');
+      
+      // Navigate to hub
+      window.location.href = 'hub.html';
+    }
+
+    // Check if already authenticated
+    window.addEventListener('DOMContentLoaded', () => {
+      const authenticated = localStorage.getItem('ge_authenticated');
+      if (authenticated === 'true') {
+        window.location.href = 'hub.html';
+      }
+    });
+
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+        20%, 40%, 60%, 80% { transform: translateX(10px); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

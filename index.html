@@ -3,217 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Distance — Games for Two</title>
+  <title>G & E – A Gift for Us</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <meta name="description" content="Games for two people who'd rather be in the same room.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .reveal-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--spacing-lg);
+      background: 
+        radial-gradient(ellipse at center, rgba(45, 74, 46, 0.2) 0%, transparent 70%),
+        var(--espresso);
+      position: relative;
+    }
+
+    .reveal-content {
+      max-width: 600px;
+      opacity: 0;
+      animation: fadeIn 2s ease-out 0.3s forwards;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 900;
+      color: var(--cream);
+      letter-spacing: 0.1em;
+      margin-bottom: var(--spacing-md);
+      text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 12px rgba(196, 136, 58, 0.2);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .ampersand {
+      color: var(--amber);
+      font-size: 1.2em;
+      display: inline-block;
+      margin: 0 0.2em;
+    }
+
+    .tagline {
+      font-family: var(--font-handwritten);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--amber);
+      margin-bottom: var(--spacing-lg);
+      opacity: 0;
+      animation: fadeIn 2s ease-out 1s forwards;
+      line-height: 1.4;
+    }
+
+    .subtitle {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--cream);
+      opacity: 0.8;
+      margin-bottom: var(--spacing-xl);
+      opacity: 0;
+      animation: fadeIn 2s ease-out 1.5s forwards;
+    }
+
+    .enter-btn {
+      opacity: 0;
+      animation: fadeIn 1.5s ease-out 2s forwards;
+      font-size: 1.3rem;
+      padding: var(--spacing-md) var(--spacing-xl);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .decorative-line {
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--amber) 50%,
+        transparent 100%
+      );
+      margin: var(--spacing-lg) auto;
+      opacity: 0;
+      animation: fadeIn 2s ease-out 1.2s forwards;
+    }
+
+    /* Easter egg: tiny dinosaur footprints scattered around */
+    .footprint {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      opacity: 0.1;
+      color: var(--forest);
+    }
+
+    .footprint-1 { top: 15%; left: 10%; transform: rotate(25deg); }
+    .footprint-2 { top: 20%; left: 15%; transform: rotate(-15deg); }
+    .footprint-3 { top: 75%; right: 12%; transform: rotate(45deg); }
+    .footprint-4 { bottom: 15%; left: 8%; transform: rotate(-30deg); }
+    .footprint-5 { top: 30%; right: 18%; transform: rotate(60deg); }
+  </style>
 </head>
 <body>
+  <div class="reveal-page">
+    <!-- Dinosaur footprints easter egg -->
+    <div class="footprint footprint-1">🦖</div>
+    <div class="footprint footprint-2">🦕</div>
+    <div class="footprint footprint-3">🐾</div>
+    <div class="footprint footprint-4">🦖</div>
+    <div class="footprint footprint-5">🐾</div>
 
-  <!-- Grain overlay -->
-  <div class="grain"></div>
-
-  <!-- Navigation -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#" class="nav__logo">The <em>Distance</em></a>
-      <button class="nav__toggle" aria-label="Menu" id="navToggle">
-        <span></span><span></span><span></span>
+    <div class="reveal-content">
+      <h1 class="logo">
+        G <span class="ampersand">&</span> E
+      </h1>
+      
+      <div class="decorative-line"></div>
+      
+      <p class="tagline">
+        A collection of games for two hearts,<br>
+        3,896 miles apart
+      </p>
+      
+      <p class="subtitle">
+        Austin ↔ Hawaii<br>
+        Made with love, cats, dinosaurs & thrifted treasures
+      </p>
+      
+      <button class="btn btn-primary enter-btn" onclick="enterSite()">
+        Come Inside
       </button>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="#games">Games</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#footer">Say Hi</a></li>
-      </ul>
     </div>
-  </nav>
+  </div>
 
-  <!-- Hero -->
-  <header class="hero" id="hero">
-    <div class="hero__grid-bg"></div>
-    <div class="hero__content">
-      <p class="hero__handwritten">est. whenever you left</p>
-      <h1 class="hero__title">Your Move,<br><span class="hero__title--accent">From Anywhere</span></h1>
-      <p class="hero__sub">Games for two people who'd rather be in the same room.</p>
-      <a href="#games" class="btn btn--amber">Browse the Collection</a>
-      <div class="hero__specimen-tag">
-        <span class="hero__specimen-label">SPECIMEN NO.</span>
-        <span class="hero__specimen-num">001</span>
-      </div>
-    </div>
-    <div class="hero__scroll-hint">
-      <span class="caveat">scroll down</span>
-      <div class="hero__scroll-arrow"></div>
-    </div>
-  </header>
+  <script>
+    function enterSite() {
+      // Store that they've seen the reveal
+      localStorage.setItem('ge_revealed', 'true');
+      
+      // Check if already authenticated
+      const isAuthenticated = localStorage.getItem('ge_authenticated');
+      
+      if (isAuthenticated === 'true') {
+        window.location.href = 'hub.html';
+      } else {
+        window.location.href = 'enter.html';
+      }
+    }
 
-  <!-- Games Section -->
-  <section class="games" id="games">
-    <div class="section-header">
-      <p class="section-header__handwritten">the collection</p>
-      <h2 class="section-header__title">Field Specimens</h2>
-      <p class="section-header__sub">Each game catalogued, preserved, and ready for play. Handle with care — some bite.</p>
-    </div>
-
-    <div class="games__grid">
-
-      <article class="card" data-category="explore">
-        <div class="card__specimen-num">No. 001</div>
-        <div class="card__icon">🦴</div>
-        <h3 class="card__title">Fossil Hunt</h3>
-        <p class="card__desc">Take turns hiding and finding — one buries a virtual fossil in a photo of their surroundings, the other digs. Paleontology meets hide & seek.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--rust">Explore</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="create">
-        <div class="card__specimen-num">No. 002</div>
-        <div class="card__icon">📓</div>
-        <h3 class="card__title">Field Notes</h3>
-        <p class="card__desc">Daily observations, sketched and shared. Draw something you saw today — a bug, a cloud, a weird guy's shoes — and swap journals at midnight.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--forest">Create</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="explore">
-        <div class="card__specimen-num">No. 003</div>
-        <div class="card__icon">🗺️</div>
-        <h3 class="card__title">Trail Map</h3>
-        <p class="card__desc">Chart your daily routes and compare. Who walked further? Who found the weirder path? Connect your maps at the end of each week.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--rust">Explore</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="collect">
-        <div class="card__specimen-num">No. 004</div>
-        <div class="card__icon">🪲</div>
-        <h3 class="card__title">Bug Bingo</h3>
-        <p class="card__desc">A shared bingo card of insects to spot. First to find a ladybug, a moth on a porch light, or a suspiciously large beetle wins the round.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--green">Collect</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="challenge">
-        <div class="card__specimen-num">No. 005</div>
-        <div class="card__icon">👟</div>
-        <h3 class="card__title">Thrift or Dare</h3>
-        <p class="card__desc">Visit a thrift store. Your partner picks 3 items you must try on. Photo evidence required. Bonus points for actually buying the jorts.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--blue">Challenge</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="create">
-        <div class="card__specimen-num">No. 006</div>
-        <div class="card__icon">🎨</div>
-        <h3 class="card__title">Museum Heist</h3>
-        <p class="card__desc">Pick a painting from any museum online. Recreate it with whatever's around you. Judging criteria: effort, drama, and creative use of cats.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--forest">Create</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="challenge">
-        <div class="card__specimen-num">No. 007</div>
-        <div class="card__icon">🍜</div>
-        <h3 class="card__title">Flavor Quest</h3>
-        <p class="card__desc">Each week, a mystery ingredient. Both of you find a dish featuring it at a local spot. Rate, compare, argue passionately about whose pad thai was superior.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--blue">Challenge</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-      <article class="card" data-category="collect">
-        <div class="card__specimen-num">No. 008</div>
-        <div class="card__icon">🐱</div>
-        <h3 class="card__title">Cat Census</h3>
-        <p class="card__desc">Log every cat you see. Name them. Build a shared field guide with photos, estimated fluffiness, and attitude ratings. Science demands it.</p>
-        <div class="card__meta">
-          <span class="card__tag card__tag--green">Collect</span>
-          <span class="card__players">2 players</span>
-        </div>
-        <div class="card__pin"></div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section class="about" id="about">
-    <div class="about__grid-bg"></div>
-    <div class="about__inner">
-      <div class="about__text">
-        <p class="section-header__handwritten">why this exists</p>
-        <h2 class="section-header__title">A Curiosity Cabinet<br>for Two</h2>
-        <p class="about__body">
-          Distance is weird. You can FaceTime someone across the world but you can't
-          steal a fry off their plate. These games won't fix that — but they'll give you
-          something better than "wyd" and "nm u."
-        </p>
-        <p class="about__body">
-          Think of this as a shared field journal. A place to collect small adventures,
-          stupid dares, and the kind of inside jokes that only make sense to two people
-          who'd rather be in the same room.
-        </p>
-        <p class="about__body about__body--caveat">
-          Every game here is designed to be played asynchronously, with nothing but a phone
-          and a willingness to be a little ridiculous.
-        </p>
-      </div>
-      <div class="about__card">
-        <div class="about__card-inner">
-          <div class="about__card-label">FIELD GUIDE</div>
-          <div class="about__card-edition">First Edition</div>
-          <div class="about__card-divider"></div>
-          <div class="about__card-items">
-            <div class="about__card-item">📮 Async-friendly</div>
-            <div class="about__card-item">🌎 Works at any distance</div>
-            <div class="about__card-item">📱 Phone is all you need</div>
-            <div class="about__card-item">🦕 May contain dinosaurs</div>
-          </div>
-          <div class="about__card-stamp">APPROVED</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer" id="footer">
-    <div class="footer__inner">
-      <div class="footer__brand">
-        <a href="#" class="footer__logo">The <em>Distance</em></a>
-        <p class="footer__tagline">Games for two people who'd rather be in the same room.</p>
-      </div>
-      <div class="footer__note">
-        <p class="caveat footer__handwritten">Made with patience, Wi-Fi, and a little bit of missing you.</p>
-      </div>
-      <div class="footer__bottom">
-        <p class="footer__copy">&copy; 2026 The Distance. No rights reserved — just vibes.</p>
-        <p class="footer__easter-egg" title="You found one!">🦖🪲🏃‍♂️🩳🐈📚👟🍦</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+    // If they've already seen the reveal and are authenticated, redirect to hub
+    window.addEventListener('DOMContentLoaded', () => {
+      const revealed = localStorage.getItem('ge_revealed');
+      const authenticated = localStorage.getItem('ge_authenticated');
+      
+      // Always show the reveal page on direct navigation to index
+      // but make the animation faster if they've seen it before
+      if (revealed === 'true') {
+        document.querySelector('.reveal-content').style.animationDuration = '0.8s';
+        document.querySelector('.tagline').style.animationDuration = '0.8s';
+        document.querySelector('.subtitle').style.animationDuration = '0.8s';
+        document.querySelector('.enter-btn').style.animationDuration = '0.8s';
+      }
+    });
+  </script>
 </body>
 </html>
